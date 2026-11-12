@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Event Registration Management System - discover events and register online.">
+  <title>EventHub | Event Registration Management System</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="EventHub home"><span class="brand-mark">E</span> EventHub</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+    <nav id="mainNav">
+      <a href="#home">Home</a><a href="#events">Events</a><a href="#about">About</a>
+      <button class="nav-button" id="adminLoginBtn">Admin Login</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">PLAN • CONNECT • EXPERIENCE</p>
+        <h1>Make every event<br><span>an experience.</span></h1>
+        <p class="hero-text">Discover exciting events, reserve your place and keep all your registrations in one simple place.</p>
+        <div class="hero-actions"><a class="button primary" href="#events">Explore events</a><a class="button ghost" href="#about">Learn more</a></div>
+        <div class="hero-note"><span class="live-dot"></span> Your next experience starts here</div>
+      </div>
+      <div class="hero-art" aria-label="Decorative event illustration">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="art-card art-card-main"><span class="art-icon">✦</span><small>UPCOMING EXPERIENCE</small><strong>Ideas that<br>bring us together.</strong><span class="art-line"></span><small>MEET • LEARN • CELEBRATE</small></div>
+        <div class="floating-tag tag-top">✧ Discover</div><div class="floating-tag tag-bottom">✓ Register</div>
+      </div>
+    </section>
+
+    <section class="stats-strip" aria-label="Event statistics">
+      <div><strong id="statEvents">0</strong><span>Available events</span></div>
+      <div><strong id="statRegistrations">0</strong><span>Total registrations</span></div>
+      <div><strong id="statCategories">0</strong><span>Event categories</span></div>
+    </section>
+
+    <section class="section" id="events">
+      <div class="section-heading">
+        <div><p class="eyebrow">FIND YOUR NEXT EXPERIENCE</p><h2>Explore events</h2><p class="muted">Choose an event that interests you and register in a few steps.</p></div>
+        <div class="search-tools"><input id="searchInput" type="search" placeholder="Search events..." aria-label="Search events"><select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select></div>
+      </div>
+      <div id="eventGrid" class="event-grid"></div>
+      <p id="emptyEvents" class="empty-state hidden">No events match your search.</p>
+    </section>
+
+    <section class="section dashboard-section" id="myRegistrations">
+      <div class="section-heading"><div><p class="eyebrow">YOUR ACTIVITY</p><h2>My registrations</h2><p class="muted">Registrations saved in this browser.</p></div></div>
+      <div id="myRegistrationList" class="registration-list"></div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div><p class="eyebrow">ABOUT EVENTHUB</p><h2>One place for<br>every occasion.</h2></div>
+      <p>EventHub is a student-developed web application concept that simplifies event discovery and registration. It demonstrates semantic HTML, responsive CSS, JavaScript DOM manipulation, form validation and browser-based data persistence.</p>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">E</span> EventHub</a><p>Web Development Semester Project • Educational Demonstration</p><span>© <span id="year"></span> EventHub</span></footer>
+
+  <!-- Registration modal -->
+  <div class="modal hidden" id="registrationModal" role="dialog" aria-modal="true" aria-labelledby="registrationTitle">
+    <div class="modal-card">
+      <button class="modal-close" data-close="registrationModal" aria-label="Close">×</button>
+      <p class="eyebrow">SAVE YOUR SEAT</p><h2 id="registrationTitle">Event registration</h2>
+      <p id="selectedEventName" class="muted"></p>
+      <form id="registrationForm">
+        <input type="hidden" id="registrationEventId">
+        <div class="form-grid">
+          <label>Full name<input id="fullName" name="fullName" required minlength="2" maxlength="60" placeholder="Enter your name"></label>
+          <label>Email address<input id="email" name="email" type="email" required placeholder="name@example.com"></label>
+          <label>Phone number<input id="phone" name="phone" type="tel" required pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile number"></label>
+          <label>Department / Organization<input id="department" name="department" required maxlength="80" placeholder="Your department"></label>
+          <label class="full-width">Year / Designation
+            <select id="yearLevel" required><option value="">Select an option</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>Faculty / Professional</option><option>Other</option></select>
+          </label>
+        </div>
+        <label class="consent"><input type="checkbox" id="consent" required> I confirm that the information provided is correct.</label>
+        <button class="button primary full-button" type="submit">Confirm registration</button>
+        <p class="form-hint">Demo project: no payment is collected. Your details are stored locally in this browser.</p>
+        <p id="registrationMessage" class="message" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin login modal -->
+  <div class="modal hidden" id="adminLoginModal" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+    <div class="modal-card small-modal">
+      <button class="modal-close" data-close="adminLoginModal" aria-label="Close">×</button>
+      <p class="eyebrow">RESTRICTED AREA</p><h2 id="adminLoginTitle">Admin login</h2>
+      <p class="muted">Demonstration credentials: admin / admin123</p>
+      <form id="adminLoginForm">
+        <label>Username<input id="adminUsername" required autocomplete="username"></label>
+        <label>Password<input id="adminPassword" type="password" required autocomplete="current-password"></label>
+        <button class="button primary full-button" type="submit">Login</button>
+        <p id="adminLoginMessage" class="message" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin dashboard -->
+  <section class="admin-panel hidden" id="adminPanel">
+    <div class="admin-top"><div><p class="eyebrow">CONTROL CENTER</p><h2>Administrator dashboard</h2></div><button class="button ghost" id="adminLogoutBtn">Log out</button></div>
+    <div class="admin-metrics"><div><span>Events</span><strong id="adminEventCount">0</strong></div><div><span>Registrations</span><strong id="adminRegCount">0</strong></div><div><span>Available seats</span><strong id="adminSeats">0</strong></div></div>
+    <div class="admin-columns">
+      <div class="admin-card"><h3 id="eventFormHeading">Add a new event</h3>
+        <form id="eventForm">
+          <input type="hidden" id="editEventId">
+          <label>Event title<input id="eventTitle" required maxlength="80"></label>
+          <div class="form-grid"><label>Category<select id="eventCategory" required><option value="">Choose</option><option>Technology</option><option>Education</option><option>Workshop</option><option>Cultural</option><option>Sports</option><option>Business</option></select></label>
+          <label>Event date<input id="eventDate" type="date" required></label>
+          <label>Time<input id="eventTime" type="time" required></label>
+          <label>Venue<input id="eventVenue" required maxlength="100"></label>
+          <label>Capacity<input id="eventCapacity" type="number" min="1" max="10000" required></label>
+          <label>Fee (₹)<input id="eventFee" type="number" min="0" step="1" value="0" required></label></div>
+          <label>Description<textarea id="eventDescription" rows="3" required maxlength="300"></textarea></label>
+          <div class="inline-actions"><button class="button primary" type="submit" id="saveEventBtn">Save event</button><button class="button ghost hidden" type="button" id="cancelEditBtn">Cancel edit</button></div>
+          <p id="eventFormMessage" class="message" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="admin-card"><div class="table-heading"><h3>Manage events</h3><button class="button ghost compact" id="exportCsvBtn">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Event</th><th>Date</th><th>Seats</th><th>Actions</th></tr></thead><tbody id="adminEventTable"></tbody></table></div></div>
+    </div>
+    <div class="admin-card participants-card"><div class="table-heading"><h3>All participants</h3><span class="muted" id="participantCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Event</th><th>Phone</th><th>Action</th></tr></thead><tbody id="participantsTable"></tbody></table></div></div>
+    <p class="security-note">Academic demo only: admin credentials and data are stored client-side. Do not use real personal or confidential information.</p>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
